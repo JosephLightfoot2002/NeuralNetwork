@@ -3,16 +3,19 @@ using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
+using ActivationFunctions;
 using Functions;
 using MatrixSpace;
 using NetworkEnums;
+using LossFunctions;
 
 namespace NeuralNetworkSpace{
     public abstract class NeuralNetwork{
 
 
-        public required Matrix[] Layers{get;set;}
+        public Matrix[] Layers{get;set;}
 
         public Matrix[] Bias{get;set;}
         public Matrix[] Activations{get;set;}
@@ -23,19 +26,16 @@ namespace NeuralNetworkSpace{
 
         public Matrix[] BiasLayers{get;set;}
 
-        private abstract ActivationFunctions ActivationFunction;
+        public IActivationFunction ActivationFunction{get; set;}  
+        public ILossFunction LossFunction{get;set;}
 
-        private ActivationFunctionsDerivatives ActivationFunctionDerivate;
-        private LossFunctions LossFunction;
-
-        private LossFunctionDerivatives LossFunctionDerivative;
         public int Length{get;set;}
 
         public Matrix Run(double[] input){
             Matrix x = new Matrix(input);
-            x=Activate(x);
+            x=ActivationFunction.ActivationFunctionDerivative(x);
             for(int i=0;i<Length;i++){
-                x=Activate(Layers[i].Multiply(x).Add(Bias[i]));
+                x=ActivationFunction.ActivationFunctionDerivative(Layers[i].Multiply(x).Add(Bias[i]));
             }
             return x;
             
@@ -63,9 +63,9 @@ namespace NeuralNetworkSpace{
 
         public void FeedForward(double[] input){
             Matrix x= new Matrix(input);
-            Activations[0]= Activate(x);
+            Activations[0]= ActivationFunction.ActivationFunctionDerivative(x);
             for(int i=1;i<Length+1;i++){
-                Activations[i]=Activate(Layers[i-1].Multiply(Activations[i-1]).Add(Bias[i-1]));
+                Activations[i]=ActivationFunction.ActivationFunctionDerivative(Layers[i-1].Multiply(Activations[i-1]).Add(Bias[i-1]));
                 
 
             }
@@ -74,9 +74,10 @@ namespace NeuralNetworkSpace{
 
         public void Backpropogate(double[] output){
             var aim= new Matrix(output);   
-            Deltas[Length-1]=ActivationFunctionDerivate(Activations[Length]).HadamardProduct(Activations[Length].Add(aim.ScalarMultiply(-1)));
+            Deltas[Length-1]=ActivationFunction.ActivationFunctionDerivative(Activations[Length]).HadamardProduct
+            (LossFunction.LossFunctionDerivative(Activations[Length],aim));
             for(int i=1;i<Length;i++){
-                Deltas[Length-1-i]=ActivationFunctionDerivate(Activations[Length]).HadamardProduct(Layers[Length-i].Transpose().Multiply(Deltas[Length-i]));
+                Deltas[Length-1-i]=ActivationFunction.ActivationFunctionDerivative(Activations[Length]).HadamardProduct(Layers[Length-i].Transpose().Multiply(Deltas[Length-i]));
             
             }
             for(int i=0;i<Length;i++){
@@ -90,9 +91,6 @@ namespace NeuralNetworkSpace{
 
 
 
-        public Matrix Activate(Matrix m){
-            return m.ApplyFunction(ActivationFunction);
-        }
         
 
     }

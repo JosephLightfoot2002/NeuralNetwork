@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using ActivationFunctions;
 using Functions;
 
 namespace MatrixSpace{
@@ -63,6 +64,7 @@ namespace MatrixSpace{
         public int Dim1{get;set;}
 
         public int Dim2{get;set;}
+
 
         public Matrix Multiply(Matrix m2){
             double[,] values= new double[Dim1,m2.Dim2];
@@ -141,19 +143,7 @@ namespace MatrixSpace{
             return new Matrix(values);
         }
 
-        public Matrix ReLuFunc(){
-            double[,] values= new double[Dim1,Dim2];
-            for(int i=0;i<Dim1;i++){
-                for(int j=0;j<Dim2;j++){
-                    if(Values[i,j]>0){
-                        values[i,j]=1;
-                    }else{
-                        values[i,j]=0;
-                    }
-                }
-            }
-            return new Matrix(values);
-        }
+
 
         public void PrintMatrix(){
             string s= new string("");
@@ -184,11 +174,11 @@ namespace MatrixSpace{
             return sum;
         }
 
-        public Matrix ApplyFunction(ActivationFunctions a){
+        public Matrix ApplyFunction(Function f){
             double[,] values= new double[Dim1,Dim2];
             for(int i=0;i<Dim1;i++){
                 for(int j=0;j<Dim2;j++){
-                    values[i,j]=a(Values[i,j]);
+                    values[i,j]=f(Values[i,j]);
                 }
             }
             return new Matrix(values);

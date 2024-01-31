@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2duKy5atBIUC/AZ7PsYFZzF9172rAAuaweaW8LK7Yrj0HqT5gTQdh3ZsncdKG+bu6qf2yY1q3fEG7OkQYsenkg==",
+  "dgSpecHash": "VMcLKyazzqYyYm6KDkh6LgqcbMOT92MsqsjdGwjng57meBW+aLUyITMS5Vxec1Ux7oT3A8eFvKy7aVPszMLQSA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jmlig\\Desktop\\NeuralNet\\ConsoleApp1\\ConsoleApp1.csproj",
+  "projectFilePath": "C:\\Users\\jmlig\\Neural Network\\NeuralNetwork\\ConsoleApp1\\ConsoleApp1.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
