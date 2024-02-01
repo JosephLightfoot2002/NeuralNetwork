@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "VMcLKyazzqYyYm6KDkh6LgqcbMOT92MsqsjdGwjng57meBW+aLUyITMS5Vxec1Ux7oT3A8eFvKy7aVPszMLQSA==",
+  "dgSpecHash": "FiqJY/A6AiaZEFEpFFtz/TBikthK6kxmotfKI3RSWbAq5xSF1m/1gm5leD44cCtMcescFYMbJ9LThePI3kOgsw==",
   "success": true,
   "projectFilePath": "C:\\Users\\jmlig\\Neural Network\\NeuralNetwork\\ConsoleApp1\\ConsoleApp1.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\jmlig\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -2,13 +2,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json.Serialization;
 using ActivationFunctions;
-using Functions;
-
 namespace MatrixSpace{
 
     public class Matrix{
 
+        public Matrix(){}
         public Matrix(double[,] matrix){
             Values=matrix;
             Dim1=matrix.GetLength(0);
@@ -59,7 +59,8 @@ namespace MatrixSpace{
 
 
         }
-        private double[,] Values{get;set;}
+
+        public double[,] Values{get;set;}
 
         public int Dim1{get;set;}
 

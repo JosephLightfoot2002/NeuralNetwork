@@ -27,3 +27,6 @@ C:\Users\jmlig\Neural Network\NeuralNetwork\ConsoleApp1\obj\Debug\net8.0\refint\
 C:\Users\jmlig\Neural Network\NeuralNetwork\ConsoleApp1\obj\Debug\net8.0\ConsoleApp1.pdb
 C:\Users\jmlig\Neural Network\NeuralNetwork\ConsoleApp1\obj\Debug\net8.0\ConsoleApp1.genruntimeconfig.cache
 C:\Users\jmlig\Neural Network\NeuralNetwork\ConsoleApp1\obj\Debug\net8.0\ref\ConsoleApp1.dll
+C:\Users\jmlig\Neural Network\NeuralNetwork\ConsoleApp1\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\jmlig\Neural Network\NeuralNetwork\ConsoleApp1\obj\Debug\net8.0\ConsoleApp1.csproj.AssemblyReference.cache
+C:\Users\jmlig\Neural Network\NeuralNetwork\ConsoleApp1\obj\Debug\net8.0\ConsoleApp1.csproj.CopyComplete
