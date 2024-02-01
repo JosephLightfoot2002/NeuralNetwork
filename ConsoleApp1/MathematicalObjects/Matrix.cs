@@ -185,5 +185,18 @@ namespace MatrixSpace{
             return new Matrix(values);
         }
 
+        public Matrix VectorToMatrix(){
+            if(Dim2>1){
+                throw new ArgumentException("Not a Vector");
+            }else{
+                Matrix matrix =  new Matrix(true,Dim1,Dim1);
+                for(int i=0;i<Dim1; i++){
+                    matrix.Values[i,i] = Values[i,1];
+                }
+                return matrix;
+            }
+            
+        }
+
     }
 }

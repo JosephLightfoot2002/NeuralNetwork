@@ -17,7 +17,8 @@ namespace ActivationFunctions{
             return x.ApplyFunction(F);
         }
         public virtual Matrix ActivateFunctionDerivative(Matrix x){
-            return x.ApplyFunction(F);
+            x= x.ApplyFunction(F);
+            return x.VectorToMatrix();
         }
 
     }
@@ -45,7 +46,18 @@ namespace ActivationFunctions{
         }
 
         public Matrix ActivationFunctionDerivative( Matrix x){
-            return x;
+            double[,] values =  new double[x.Dim1,x.Dim1];
+            for( int i=0;i<x.Dim1;i++){
+                for(int j=0;j<x.Dim1;j++){
+                    if(i==j){
+                        values[i,j] = x.Point(i,j)*(1-x.Point(i,j));
+                    }else{
+                        values[i,j] = -x.Point(j,1)*x.Point(i,1);
+                    }
+                }
+               
+            }
+            return new Matrix(values);
         }
     }
 

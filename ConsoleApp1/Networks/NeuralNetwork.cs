@@ -8,6 +8,7 @@ namespace NeuralNetworkSpace{
     public class NeuralNetwork{
 
         public NeuralNetwork(){}
+
         public NeuralNetwork(int[,] matrixDimensions, Atype atype, Ltype ltype ){
 
             Length = matrixDimensions.GetLength(0);
@@ -140,7 +141,7 @@ namespace NeuralNetworkSpace{
             Deltas[Length-1]=ActivationFunction.ActivateFunctionDerivative(Activations[Length]).HadamardProduct
             (LossFunction.LossFunctionDerivative(Activations[Length],aim));
             for(int i=1;i<Length;i++){
-                Deltas[Length-1-i]=ActivationFunction.ActivateFunctionDerivative(Activations[Length]).HadamardProduct(Layers[Length-i].Transpose().Multiply(Deltas[Length-i]));
+                Deltas[Length-1-i]=ActivationFunction.ActivateFunctionDerivative(Activations[Length]).Multiply(Layers[Length-i].Transpose().Multiply(Deltas[Length-i]));
             
             }
             for(int i=0;i<Length;i++){
@@ -155,6 +156,24 @@ namespace NeuralNetworkSpace{
             int[] integerArray = Enumerable.Range(0,n).ToArray();
             rand.Shuffle(integerArray);
             return integerArray;
+
+        }
+
+        public void GenerateFromJson(){
+            GradLayers=new Matrix[Length];
+            BiasLayers = new Matrix[Length];
+            Activations= new Matrix[Length+1];
+            Deltas= new Matrix[Length];
+
+            ActivationFunction = EnumConverter.EnumToActivation(ActivationFunctionType);
+            LossFunction = EnumConverter.EnumToLoss(LossFunctionType);
+
+            for(int i=0;i<Length;i++){
+                GradLayers[i] = new Matrix(false,Layers[i].Dim1,Layers[i].Dim2);
+                BiasLayers[i] = new Matrix(false,Layers[i].Dim1,1);
+
+            }
+
 
         }
         

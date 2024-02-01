@@ -12,7 +12,9 @@ namespace NNJsonConverterSpace{
         }
 
         public static NeuralNetwork JsontoNN(string json){
-            return JsonConvert.DeserializeObject<NeuralNetwork>(json);
+            var neuralNetwork = JsonConvert.DeserializeObject<NeuralNetwork>(json);
+            neuralNetwork.GenerateFromJson();
+            return neuralNetwork;
         }
     }
 
