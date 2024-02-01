@@ -5,9 +5,15 @@ using NeuralNetworkSpace;
 using MSENeuralNetworkSpace;
 using ActivationFunctions;
 
-int[,] dim={{2,3},{3,4}};
-IActivationFunction f = new SigmoidalFunction();
+int[,] dim={{1,2}};
+IActivationFunction f = new Linear();
 var hi = new MSENeuralNetwork(dim,f);
+double[][] x= {new double[]{1,3}, new double[]{2,7},new double[]{3,8},new double[]{4,-4},new double[]{5,-16},new double[]{6,22}};
+double[][] y ={new double[]{3}, new double[]{8},new double[]{10},new double[]{-1},new double[]{-12},new double[]{27}};
+
+hi.TrainNetwork(x,y,2000,0.8,2);
+Console.WriteLine(hi.Run(x[0]).ToString());
+
 Console.WriteLine("hi");
 
 // double[][] trainingInput = [[0,0],[1,0],[0,1],[1,1]];

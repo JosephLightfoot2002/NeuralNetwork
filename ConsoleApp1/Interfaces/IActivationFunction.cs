@@ -58,4 +58,14 @@ namespace ActivationFunctions{
         }
     }
 
+    public class Linear:IActivationFunction{
+        public Matrix ActivationFunction(Matrix x){
+            return x;
+        }
+
+        public Matrix ActivationFunctionDerivative(Matrix x){
+            return new Matrix(true, x.Dim1,x.Dim2);
+        }
+    }
+
 }

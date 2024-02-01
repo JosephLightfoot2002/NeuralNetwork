@@ -17,6 +17,8 @@ namespace NeuralNetworkSpace{
 
         public Matrix[] Layers{get;set;}
 
+        public Random rand = new Random();
+
         public Matrix[] Bias{get;set;}
         public Matrix[] Activations{get;set;}
 
@@ -29,8 +31,11 @@ namespace NeuralNetworkSpace{
         public IActivationFunction ActivationFunction{get; set;}  
         public ILossFunction LossFunction{get;set;}
 
+        private double Loss{get;set;}
+
         public int Length{get;set;}
 
+        public abstract void Result(double[][] testData);
         public Matrix Run(double[] input){
             Matrix x = new Matrix(input);
             x=ActivationFunction.ActivationFunctionDerivative(x);
@@ -40,12 +45,51 @@ namespace NeuralNetworkSpace{
             return x;
             
         }
+        public void TrainNetwork(double[][] dataX, double[][] dataY, int trainTime, double testTrainSplit, int stochasticSize){
 
-        public void TrainNetwork(double[][] input, double[][] output){
-            for(int i=0;i<input.Length;i++){
+            if(testTrainSplit>1|testTrainSplit<0){
+                throw new Exception("TestTrainSplit must be between 0 to 100");
+            }else if(dataX.Length!=dataY.Length){
+                throw new Exception("Output and Input must be same size array");
+            }else if(trainTime<1){
+                throw new Exception("TrainTime must be larger than 0");
+            }else if(stochasticSize>dataX.Length*testTrainSplit){
+                throw new Exception("Cannot randomly sample more points than in the training data");
+            }else{
+                
+                int[] randomSplit = RandomChoice(dataX.Length);
+                int trainAmount = (int)Math.Floor(testTrainSplit*dataX.Length);
 
-                FeedForward(input[i]);
-                Backpropogate(output[i]);
+                double[][] trainDataX = new double[trainAmount][];
+                double[][] trainDataY = new double[trainAmount][];
+                double[][] testDataX = new double[dataX.Length-trainAmount][];
+                double[][] testDataY = new double[dataX.Length-trainAmount][];
+
+                for(int i=0;i<trainAmount;i++){
+                    trainDataX[i] = dataX[randomSplit[i]];
+                    trainDataY[i] = dataY[randomSplit[i]];
+
+                }
+                for(int i=trainAmount;i<dataX.Length;i++){
+                    testDataX[i-trainAmount] = dataX[randomSplit[i]];
+                    testDataY[i-trainAmount] = dataY[randomSplit[i]];
+                }
+
+                for(int i=0; i<trainTime;i++){
+                    int[] stochasticSubSet = RandomChoice(trainAmount);
+                    TrainOnceNetwork(trainDataX,trainDataY,stochasticSubSet,stochasticSize);
+                }
+
+
+            }
+
+
+        }
+        public void TrainOnceNetwork(double[][] input, double[][] output, int[] stochasticChoices, int stochasticSize){
+            for(int i=0;i<stochasticSize;i++){
+
+                FeedForward(input[stochasticChoices[i]]);
+                Backpropogate(output[stochasticChoices[i]]);
 
             }
             double N=input.Length;
@@ -63,9 +107,9 @@ namespace NeuralNetworkSpace{
 
         public void FeedForward(double[] input){
             Matrix x= new Matrix(input);
-            Activations[0]= ActivationFunction.ActivationFunctionDerivative(x);
+            Activations[0]= ActivationFunction.ActivationFunction(x);
             for(int i=1;i<Length+1;i++){
-                Activations[i]=ActivationFunction.ActivationFunctionDerivative(Layers[i-1].Multiply(Activations[i-1]).Add(Bias[i-1]));
+                Activations[i]=ActivationFunction.ActivationFunction(Layers[i-1].Multiply(Activations[i-1]).Add(Bias[i-1]));
                 
 
             }
@@ -81,12 +125,20 @@ namespace NeuralNetworkSpace{
             
             }
             for(int i=0;i<Length;i++){
-                GradLayers[i]=GradLayers[i].Add(Deltas[i].Multiply(Activations[i].Transpose()));
+                GradLayers[i]=GradLayers[i].Add(Deltas[i].Multiply(Activations[i].Transpose()).ScalarMultiply(0.005));
                 BiasLayers[i]=BiasLayers[i].Add(Deltas[i]);
                
 
             }
         }
+
+        public int[] RandomChoice(int n){
+            int[] integerArray = Enumerable.Range(0,n).ToArray();
+            rand.Shuffle(integerArray);
+            return integerArray;
+
+        }
+        
 
 
 
